@@ -3,48 +3,99 @@ import { BadgeCheck, CalendarCheck, Camera, HeartHandshake, Images, MapPin, Spar
 import InfoCard from "../components/InfoCard.jsx";
 import PageHero from "../components/PageHero.jsx";
 import { heroImages } from "../data/heroImages.js";
+import portraitPhoto from "../54126_0.jpg";
+import championCollage from "../54127_0.jpg";
+import showPhoto from "../54128_0.jpg";
+import blueShowPhoto from "../54129_0.jpg";
+import leoLogo from "../54130_0.jpg";
+import lincolnCollage from "../54136_0.jpg";
+import groupPlayPhoto from "../54157_0.jpg";
 
 const albumPhotos = [
   {
     title: "Morning smile",
     tag: "Studio",
-    image: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=900&q=80",
+    image: portraitPhoto,
   },
   {
-    title: "Walk day",
+    title: "Champion wall",
+    tag: "Show",
+    image: showPhoto,
+  },
+  {
+    title: "Garden crew",
     tag: "Outdoor",
-    image: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=900&q=80",
+    image: groupPlayPhoto,
   },
   {
-    title: "Fresh coat",
-    tag: "Grooming",
-    image: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=900&q=80",
-  },
-  {
-    title: "Treat focus",
-    tag: "Portrait",
-    image: "https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=900&q=80",
+    title: "Memory board",
+    tag: "Collage",
+    image: lincolnCollage,
   },
 ];
 
 const boothFrames = [
-  ["sunny", "Sunny Pop", "Warm yellow frame for cheerful portraits."],
-  ["mint", "Mint Studio", "Soft green frame for clean profile shots."],
-  ["classic", "Classic Leo", "Deep frame for premium Corgi portraits."],
+  ["sunny", "Sunny Pop"],
+  ["mint", "Mint Studio"],
+  ["classic", "Classic Leo"],
+  ["pink", "Blush Ribbon"],
+];
+
+const boothBackdrops = [
+  ["cloud", "Cloud"],
+  ["stage", "Show Stage"],
+  ["garden", "Garden"],
+];
+
+const boothStickers = [
+  ["spark", "Spark"],
+  ["paws", "Paws"],
+  ["crown", "Crown"],
+];
+
+const boothCaptions = [
+  ["Champion Baby", "Warm yellow frame for cheerful champion portraits."],
+  ["Best Short Legs", "A playful layout for Corgi profile shots."],
+  ["Leo Corgi Star", "Premium profile styling for the house album."],
 ];
 
 const sessions = [
-  ["Mini Portrait", "$29", "15 minutes, 3 edited photos, one Corgi outfit prop."],
-  ["Family Corgi", "$59", "35 minutes, 8 edited photos, family and solo poses."],
-  ["Birthday Set", "$79", "45 minutes, themed backdrop, treats, and 12 edited photos."],
+  {
+    title: "Mini Portrait",
+    price: "$29",
+    copy: "15 minutes, 3 edited photos, one Corgi outfit prop.",
+    image: portraitPhoto,
+  },
+  {
+    title: "Champion Session",
+    price: "$59",
+    copy: "Show-style portraits, ribbon moments, and polished winner shots.",
+    image: blueShowPhoto,
+  },
+  {
+    title: "Memory Collage",
+    price: "$79",
+    copy: "A designed collage set using your favorite Corgi photos and captions.",
+    image: championCollage,
+  },
 ];
 
-const boothPreviewImage = "https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1000&q=80";
-const profileImage = "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=1000&q=80";
+const boothPreviewImage = portraitPhoto;
+const profileImage = portraitPhoto;
 
 function Profile() {
-  const [activeFrame, setActiveFrame] = useState("sunny");
-  const selectedFrame = boothFrames.find(([id]) => id === activeFrame);
+  const [boothDesign, setBoothDesign] = useState({
+    frame: "sunny",
+    backdrop: "cloud",
+    sticker: "spark",
+    caption: "Champion Baby",
+  });
+
+  const updateBoothDesign = (type, value) => {
+    setBoothDesign((design) => ({ ...design, [type]: value }));
+  };
+
+  const selectedCaption = boothCaptions.find(([label]) => label === boothDesign.caption);
 
   return (
     <>
@@ -97,28 +148,31 @@ function Profile() {
       <section className="photo-booth-section">
         <div className="booth-copy">
           <p className="eyebrow">Photo booth</p>
-          <h2>Pick a frame before the pose.</h2>
-          <p>Choose a booth look for your Corgi profile shot. The preview updates instantly so you can pick a mood before booking.</p>
-          <div className="booth-controls" aria-label="Photo booth frame options">
-            {boothFrames.map(([id, label]) => (
-              <button className={activeFrame === id ? "active" : ""} type="button" onClick={() => setActiveFrame(id)} key={id}>
-                {label}
-              </button>
-            ))}
+          <h2>Build a booth look before the pose.</h2>
+          <p>Choose a frame, backdrop, sticker, and caption. The preview updates instantly using Leo Corgi House photos from your local source folder.</p>
+          <div className="booth-control-stack" aria-label="Photo booth design options">
+            <BoothOptionGroup title="Frame" options={boothFrames} value={boothDesign.frame} onChange={(value) => updateBoothDesign("frame", value)} />
+            <BoothOptionGroup title="Backdrop" options={boothBackdrops} value={boothDesign.backdrop} onChange={(value) => updateBoothDesign("backdrop", value)} />
+            <BoothOptionGroup title="Sticker" options={boothStickers} value={boothDesign.sticker} onChange={(value) => updateBoothDesign("sticker", value)} />
+            <BoothOptionGroup title="Caption" options={boothCaptions.map(([label]) => [label, label])} value={boothDesign.caption} onChange={(value) => updateBoothDesign("caption", value)} />
           </div>
         </div>
-        <div className={`booth-preview ${activeFrame}`}>
+        <div className={`booth-preview frame-${boothDesign.frame} backdrop-${boothDesign.backdrop}`}>
           <div className="booth-toolbar">
             <span>
               <Camera />
               Leo Booth
             </span>
-            <strong>{selectedFrame[1]}</strong>
+            <strong>{boothDesign.caption}</strong>
           </div>
-          <img src={boothPreviewImage} alt="Corgi photo booth preview" />
+          <div className="booth-stage">
+            <img src={boothPreviewImage} alt="Corgi photo booth preview" />
+            <span className={`booth-sticker sticker-${boothDesign.sticker}`} aria-hidden="true"></span>
+            <img className="booth-logo" src={leoLogo} alt="Leo Corgi House logo" />
+          </div>
           <div className="booth-caption">
             <Images />
-            <span>{selectedFrame[2]}</span>
+            <span>{selectedCaption[1]}</span>
           </div>
         </div>
       </section>
@@ -135,17 +189,33 @@ function Profile() {
           </a>
         </div>
         <div className="session-grid">
-          {sessions.map(([title, price, copy]) => (
-            <article className="session-card" key={title}>
-              <span>{price}</span>
-              <h3>{title}</h3>
-              <p>{copy}</p>
+          {sessions.map((session) => (
+            <article className="session-card" key={session.title}>
+              <img src={session.image} alt={`${session.title} preview`} />
+              <span>{session.price}</span>
+              <h3>{session.title}</h3>
+              <p>{session.copy}</p>
               <a href="#contact">Choose session</a>
             </article>
           ))}
         </div>
       </section>
     </>
+  );
+}
+
+function BoothOptionGroup({ title, options, value, onChange }) {
+  return (
+    <div className="booth-option-group">
+      <span>{title}</span>
+      <div className="booth-controls">
+        {options.map(([id, label]) => (
+          <button className={value === id ? "active" : ""} type="button" onClick={() => onChange(id)} key={id}>
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }
 
