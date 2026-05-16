@@ -62,19 +62,19 @@ const boothCaptions = [
 const sessions = [
   {
     title: "Mini Portrait",
-    price: "$29",
+    price: "฿15,000",
     copy: "15 minutes, 3 edited photos, one Corgi outfit prop.",
     image: portraitPhoto,
   },
   {
     title: "Champion Session",
-    price: "$59",
+    price: "฿29,000",
     copy: "Show-style portraits, ribbon moments, and polished winner shots.",
     image: blueShowPhoto,
   },
   {
     title: "Memory Collage",
-    price: "$79",
+    price: "฿20,000",
     copy: "A designed collage set using your favorite Corgi photos and captions.",
     image: championCollage,
   },
